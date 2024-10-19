@@ -1,56 +1,43 @@
-// https://github.com/microsoft/vscode-dev-containers/tree/v0.195.0/containers/go
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/docker-existing-docker-compose
 {
-    // 開発用コンテナ名
-    "name": "Go",
-    // 開発用コンテナに利用するdocker-compose.ymlを指定
-    "dockerComposeFile": ["../docker-compose.yml"],
-    "service": "app",
-    // volumeで指定したworkspace
-    "workspaceFolder": "/code",
-    "settings": { 
-      // デフォルトでbashのターミナルを起動させる
-      // https://qiita.com/tt4q/items/8a0e4c31f13279db0d65
-      "terminal.integrated.defaultProfile.linux": "bash",
-      // ↑のコマンドに指定出来るコマンドを列挙する
-      "terminal.integrated.profiles.linux": {
-        "bash": {
-          "path": "bash",
-          "icon": "terminal-bash"
-        },
-        "zsh": {
-          "path": "zsh"
-        },
-        "fish": {
-          "path": "fish"
-        },
-        "tmux": {
-          "path": "tmux",
-          "icon": "terminal-tmux"
-        },
-        "pwsh": {
-          "path": "pwsh",
-          "icon": "terminal-powershell"
-        }
-      },
-      // goのツール更新が入った場合に更新しない
-      "go.toolsManagement.checkForUpdates": "off",
-      "go.gopath": "/go",
-      // gofmtをフォーマッタとして利用する
-      "go.formatTool": "gofmt",
-      // goの言語サーバを有効にする
-      "go.useLanguageServer": true,
-      // 自動ビルドを有効化(language serverを有効にする必要がある)
-      "go.gocodeAutoBuild": false,
-      // go言語以外の自動フォーマットを無効化
-      "editor.formatOnSave": false,
-      // go言語の場合に自動フォーマットを有効化(フォーマッタが必須)
-      "[go]": {
-        "editor.formatOnSave": true,
-      }
-    },
-    
-    // Add the IDs of extensions you want installed when the container is created.
-    "extensions": [
-      "golang.Go"
-    ],
-  }
+	"name": "Golang Container",
+
+	// Update the 'dockerComposeFile' list if you have more compose files or use different names.
+	// The .devcontainer/docker-compose.yml file contains any overrides you need/want to make.
+	"dockerComposeFile": [
+		"../docker-compose.yml"
+	],
+
+	// The 'service' property is the name of the service for the container that VS Code should
+	// use. Update this value and .devcontainer/docker-compose.yml to the real service name.
+	"service": "app",
+
+	// The optional 'workspaceFolder' property is the path VS Code should open by default when
+	// connected. This is typically a file mount in .devcontainer/docker-compose.yml
+	"workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+	"features": {
+		"ghcr.io/devcontainers/features/go:1": {}
+	}
+
+	// Features to add to the dev container. More info: https://containers.dev/features.
+	// "features": {},
+
+	// Use 'forwardPorts' to make a list of ports inside the container available locally.
+	// "forwardPorts": [],
+
+	// Uncomment the next line if you want start specific services in your Docker Compose config.
+	// "runServices": [],
+
+	// Uncomment the next line if you want to keep your containers running after VS Code shuts down.
+	// "shutdownAction": "none",
+
+	// Uncomment the next line to run commands after the container is created.
+	// "postCreateCommand": "cat /etc/os-release",
+
+	// Configure tool-specific properties.
+	// "customizations": {},
+
+	// Uncomment to connect as an existing user other than the container default. More info: https://aka.ms/dev-containers-non-root.
+	// "remoteUser": "devcontainer"
+}
