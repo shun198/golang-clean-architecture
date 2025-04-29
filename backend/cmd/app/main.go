@@ -4,7 +4,7 @@ import (
 	"log"
 
 	"github.com/gin-gonic/gin"
-	"github.com/shun198/golang-clean-architecture/internal/infrastructures/database"
+	database "github.com/shun198/golang-clean-architecture/internal/infrastructures/databases"
 )
 
 func main() {
