@@ -1,7 +1,7 @@
 package seed
 
 import (
-	"github.com/shun198/golang-clean-architecture/internal/domain/models"
+	"github.com/shun198/golang-clean-architecture/internal/domains/models"
 )
 
 func CreateUserLocalData() []models.User {

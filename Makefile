@@ -11,4 +11,7 @@ down:
 	docker-compose down
 
 seed:
-	docker-compose exec app go run seed/seed.go
+	docker-compose exec app go run ./cmd/seed/seed.go
+
+migrate:
+	docker-compose exec app go run ./internal/infrastructures/migrations/migration.go
