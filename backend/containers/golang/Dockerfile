@@ -1,4 +1,4 @@
-FROM --platform=linux/x86_64 golang:1.23
+FROM golang:1.23
 
 WORKDIR /usr/local/go/src/golang_clean_architecture/backend
 

@@ -8,7 +8,9 @@ services:
       - ./backend:/usr/local/go/src/golang_clean_architecture/backend
     working_dir: /usr/local/go/src/golang_clean_architecture/backend
     ports:
+      - "2345:2345"
       - "8000:8000"
+      - "8080:8080"
     command: air
     env_file:
       - backend/.env

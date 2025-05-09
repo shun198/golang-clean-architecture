@@ -1,14 +1,12 @@
 package repository
 
 import (
-	"errors"
-
 	"github.com/shun198/golang-clean-architecture/internal/domains/models"
 	"gorm.io/gorm"
 )
 
 type IUserRepository interface {
-	GetUserByID(id int) (*models.User, error)
+	Create(*models.User) (*models.User, error)
 }
 
 type UserRepository struct {
@@ -21,13 +19,12 @@ func NewUserRepository(db *gorm.DB) IUserRepository {
 	}
 }
 
-func (r *UserRepository) GetUserByID(id int) (*models.User, error) {
-	var user models.User
-	if err := r.db.Where("id = ?", id).First(&user).Error; err != nil {
-		if errors.Is(err, gorm.ErrRecordNotFound) {
-			return nil, errors.New("ユーザが見つかりません")
-		}
+func (u *UserRepository) Create(user *models.User) (*models.User, error) {
+	user.CreatedBy = 1
+	user.UpdatedBy = 1
+
+	if err := u.db.Create(user).Error; err != nil {
 		return nil, err
 	}
-	return &user, nil
+	return user, nil
 }
