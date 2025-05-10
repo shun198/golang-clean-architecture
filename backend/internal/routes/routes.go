@@ -31,6 +31,7 @@ func setupPublicRoutes(publicRoutes *gin.RouterGroup) {
 }
 
 func setupPrivateRoutes(privateRoutes *gin.RouterGroup) {
+	setupLogoutRoutes(privateRoutes)
 	setupUserPrivateRoutes(privateRoutes)
 }
 
@@ -40,6 +41,10 @@ func setupLoginRoutes(publicRoutes *gin.RouterGroup) {
 	loginUseCase := usecase.NewLoginUseCase(loginRepo)
 	loginHandler := handlers.NewLoginHandler(loginUseCase)
 	login.POST("", loginHandler.Login)
+}
+
+func setupLogoutRoutes(privateRoutes *gin.RouterGroup) {
+	privateRoutes.POST("/logout", handlers.Logout)
 }
 
 func setupUserPrivateRoutes(privateRoutes *gin.RouterGroup) {

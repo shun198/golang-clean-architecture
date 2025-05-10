@@ -169,5 +169,5 @@ func (h *UserHandler) DeleteUser(c *gin.Context) {
 		})
 		return
 	}
-	c.Writer.WriteHeader(http.StatusNoContent)
+	c.Status(http.StatusNoContent)
 }
