@@ -41,7 +41,10 @@
                 "AWS_REGION": "ap-northeast-1",
                 "S3_BUCKET_NAME": "your_s3_bucket_name",
                 "S3_URL_EXPIRY": "24h",
-                "DEBUG": "true"
+                "DEBUG": "true",
+                "MAIL_ADMIN": "example@co.jp",
+                "MAIL_HOST" : "localhost",
+                "MAIL_PORT" : 1025
             }
         }
     ]
