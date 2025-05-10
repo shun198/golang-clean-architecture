@@ -28,5 +28,6 @@ func setupPublicRoutes(publicRoutes *gin.RouterGroup) {
 	userRepository := repository.NewUserRepository(database.DB)
 	userUsecase := usecase.NewUserUsecase(userRepository)
 	userHandler := handlers.NewUserHandler(userUsecase)
+	users.GET("/:id", userHandler.GetUser)
 	users.POST("", userHandler.CreateUser)
 }
