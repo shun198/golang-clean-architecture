@@ -40,5 +40,27 @@ services:
     ports:
       - '1080:1080'
       - '1025:1025'
+  minio:
+    container_name: minio
+    image: minio/minio
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      MINIO_ROOT_USER: testtest
+      MINIO_ROOT_PASSWORD: testtest
+      MINIO_SITE_REGION: us-east-1
+      MINIO_SERVER_URL: http://localhost:9000
+    command: server /data --console-address ":9001"
+    volumes:
+      - minio_data:/data
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:9000/minio/health" ]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+    env_file:
+      - backend/.env
 volumes:
   db_data:
+  minio_data:

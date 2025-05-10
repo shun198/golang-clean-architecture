@@ -8,8 +8,11 @@ import (
 )
 
 type IUserUsecase interface {
-	CreateUser(requests.CreateUserRequest) (*models.User, error)
+	CreateUser(req requests.CreateUserRequest, auth_user_id int) (*models.User, error)
 	GetUser(id int) (*models.User, error)
+	GetAllUsers() ([]*models.User, error)
+	UpdateUser(req requests.UpdateUserRequest, user *models.User, auth_user_id int) (*models.User, error)
+	DeleteUser(id int) (*models.User, error)
 }
 
 type UserUsecase struct {
@@ -22,21 +25,39 @@ func NewUserUsecase(userRepository repository.IUserRepository) *UserUsecase {
 	}
 }
 
-func (u *UserUsecase) CreateUser(req requests.CreateUserRequest) (*models.User, error) {
+func (u *UserUsecase) GetAllUsers() ([]*models.User, error) {
+	return u.userRepository.GetAll()
+}
+
+func (u *UserUsecase) CreateUser(req requests.CreateUserRequest, auth_user_id int) (*models.User, error) {
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(req.Password), bcrypt.DefaultCost)
 	if err != nil {
 		return nil, err
 	}
 
 	user := &models.User{
-		Email:    req.Email,
-		Username: req.Username,
-		Password: string(hashedPassword),
-		Role:     req.Role,
+		Email:     req.Email,
+		Username:  req.Username,
+		Password:  string(hashedPassword),
+		Role:      req.Role,
+		CreatedBy: auth_user_id,
+		UpdatedBy: auth_user_id,
 	}
 	return u.userRepository.Create(user)
 }
 
 func (u *UserUsecase) GetUser(id int) (*models.User, error) {
 	return u.userRepository.GetOne(id)
+}
+
+func (u *UserUsecase) UpdateUser(req requests.UpdateUserRequest, user *models.User, auth_user_id int) (*models.User, error) {
+	user.Email = req.Email
+	user.Username = req.Username
+	user.Role = req.Role
+	user.UpdatedBy = auth_user_id
+	return u.userRepository.Update(user)
+}
+
+func (u *UserUsecase) DeleteUser(id int) (*models.User, error) {
+	return u.userRepository.DeleteOne(id)
 }
