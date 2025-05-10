@@ -1,25 +1,25 @@
 services:
-  app:
-    container_name: app
-    build:
-      context: .
-      dockerfile: backend/containers/golang/Dockerfile
-    volumes:
-      - ./backend:/usr/local/go/src/golang_clean_architecture/backend
-    working_dir: /usr/local/go/src/golang_clean_architecture/backend
-    ports:
-      - "2345:2345"
-      - "8000:8000"
-      - "8080:8080"
-    command: air
-    env_file:
-      - backend/.env
-    depends_on:
-      db:
-        condition: service_healthy
+  # app:
+  #   container_name: golang_clean_architecture_app
+  #   build:
+  #     context: .
+  #     dockerfile: backend/containers/golang/Dockerfile
+  #   volumes:
+  #     - ./backend:/usr/local/go/src/golang_clean_architecture/backend
+  #   working_dir: /usr/local/go/src/golang_clean_architecture/backend
+  #   ports:
+  #     - "2345:2345"
+  #     - "8000:8000"
+  #     - "8080:8080"
+  #   command: air
+  #   env_file:
+  #     - backend/.env
+  #   depends_on:
+  #     db:
+  #       condition: service_healthy
 
   db:
-    container_name: db
+    container_name: golang_clean_architecture_db
     build:
       context: .
       dockerfile: backend/containers/postgres/Dockerfile
@@ -35,18 +35,5 @@ services:
     ports:
       - "5432:5432" # デバッグ用
 
-  nginx:
-    container_name: web
-    build:
-      context: .
-      dockerfile: backend/containers/nginx/Dockerfile
-    ports:
-      - 80:80
-    depends_on:
-      - app
-    volumes:
-      - ./backend/containers/nginx/nginx.conf:/etc/nginx/nginx.conf
-
 volumes:
   db_data:
-  minio_data:
