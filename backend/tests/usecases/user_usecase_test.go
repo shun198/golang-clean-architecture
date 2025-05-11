@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/shun198/golang-clean-architecture/internal/domains/models"
+	"github.com/shun198/golang-clean-architecture/internal/presentation/requests"
 	usecase "github.com/shun198/golang-clean-architecture/internal/usecases"
 	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/suite"
@@ -30,12 +31,12 @@ func (m *mockUserRepository) GetOne(id int) (*models.User, error) {
 	return args.Get(0).(*models.User), args.Error(1)
 }
 
-func (m *mockUserRepository) GetAll() ([]*models.User, error) {
-	args := m.Called()
+func (m *mockUserRepository) GetAll(params requests.ListUsersQuery) (*models.ListUsersResult, error) {
+	args := m.Called(params)
 	if args.Get(0) == nil {
 		return nil, args.Error(1)
 	}
-	return args.Get(0).([]*models.User), args.Error(1)
+	return args.Get(0).(*models.ListUsersResult), args.Error(1)
 }
 
 func (m *mockUserRepository) Update(user *models.User) (*models.User, error) {
