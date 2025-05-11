@@ -50,7 +50,7 @@ func (h *UserHandler) CreateUser(c *gin.Context) {
 	var req requests.CreateUserRequest
 	if err := c.ShouldBind(&req); err != nil {
 		c.JSON(http.StatusBadGateway, gin.H{
-			"error": "validation error",
+			"error": err.Error(),
 		})
 		return
 	}
@@ -63,7 +63,7 @@ func (h *UserHandler) CreateUser(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusCreated, responses.ListUsersResponse{
+	c.JSON(http.StatusCreated, responses.UsersResponse{
 		ID:        user.ID,
 		Email:     user.Email,
 		Username:  user.Username,
@@ -91,7 +91,7 @@ func (h *UserHandler) GetUser(c *gin.Context) {
 		})
 		return
 	}
-	c.JSON(http.StatusCreated, responses.ListUsersResponse{
+	c.JSON(http.StatusCreated, responses.UsersResponse{
 		ID:        user.ID,
 		Email:     user.Email,
 		Username:  user.Username,
@@ -108,7 +108,7 @@ func (h *UserHandler) UpdateUser(c *gin.Context) {
 	var req requests.UpdateUserRequest
 	if err := c.ShouldBind(&req); err != nil {
 		c.JSON(http.StatusBadGateway, gin.H{
-			"error": "validation error",
+			"error": err.Error(),
 		})
 		return
 	}
@@ -134,7 +134,7 @@ func (h *UserHandler) UpdateUser(c *gin.Context) {
 		})
 		return
 	}
-	c.JSON(http.StatusCreated, responses.ListUsersResponse{
+	c.JSON(http.StatusCreated, responses.UsersResponse{
 		ID:        updated_user.ID,
 		Email:     updated_user.Email,
 		Username:  updated_user.Username,

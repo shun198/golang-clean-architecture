@@ -8,6 +8,7 @@ import (
 	database "github.com/shun198/golang-clean-architecture/internal/infrastructures/databases"
 
 	middleware "github.com/shun198/golang-clean-architecture/internal/infrastructures/middlewares"
+	storage "github.com/shun198/golang-clean-architecture/internal/infrastructures/storages"
 	"github.com/shun198/golang-clean-architecture/internal/routes"
 )
 
@@ -18,7 +19,10 @@ func main() {
 	if port == "" {
 		port = "8000"
 	}
-
+	_, err := storage.NewMinioStorage()
+	if err != nil {
+		log.Fatalf("ストレージの初期化に失敗しました: %v", err)
+	}
 	r.Use(middleware.CORSConfig())
 	routes.SetupRoutes(r)
 	if err := r.Run(":" + port); err != nil {

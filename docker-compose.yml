@@ -59,8 +59,6 @@ services:
       interval: 30s
       timeout: 20s
       retries: 3
-    env_file:
-      - backend/.env
 volumes:
   db_data:
   minio_data:
