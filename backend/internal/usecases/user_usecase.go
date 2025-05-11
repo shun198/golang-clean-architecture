@@ -10,7 +10,7 @@ import (
 type IUserUsecase interface {
 	CreateUser(req requests.CreateUserRequest, auth_user_id int) (*models.User, error)
 	GetUser(id int) (*models.User, error)
-	GetAllUsers() ([]*models.User, error)
+	GetAllUsers(params requests.ListUsersQuery) (*models.ListUsersResult, error)
 	UpdateUser(req requests.UpdateUserRequest, user *models.User, auth_user_id int) (*models.User, error)
 	DeleteUser(id int) (*models.User, error)
 }
@@ -25,8 +25,8 @@ func NewUserUsecase(userRepository repository.IUserRepository) *UserUsecase {
 	}
 }
 
-func (u *UserUsecase) GetAllUsers() ([]*models.User, error) {
-	return u.userRepository.GetAll()
+func (u *UserUsecase) GetAllUsers(params requests.ListUsersQuery) (*models.ListUsersResult, error) {
+	return u.userRepository.GetAll(params)
 }
 
 func (u *UserUsecase) CreateUser(req requests.CreateUserRequest, auth_user_id int) (*models.User, error) {

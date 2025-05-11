@@ -21,16 +21,28 @@ func NewUserHandler(userUsecase usecase.IUserUsecase) *UserHandler {
 }
 
 func (h *UserHandler) GetUsers(c *gin.Context) {
-	users, err := h.userUsecase.GetAllUsers()
+	var query requests.ListUsersQuery
+	if err := c.ShouldBindQuery(&query); err != nil {
+		c.JSON(http.StatusBadGateway, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	if query.Limit == 0 {
+		query.Limit = 20
+	}
+
+	results, err := h.userUsecase.GetAllUsers(query)
 	if err != nil {
 		c.JSON(http.StatusBadGateway, gin.H{
 			"error": err.Error(),
 		})
 		return
 	}
-	var res []responses.ListUsersResponse
-	for _, user := range users {
-		res = append(res, responses.ListUsersResponse{
+	users := make([]responses.UsersResponse, len(results.Users))
+	for i, user := range results.Users {
+		users[i] = responses.UsersResponse{
 			ID:        user.ID,
 			Email:     user.Email,
 			Username:  user.Username,
@@ -40,10 +52,14 @@ func (h *UserHandler) GetUsers(c *gin.Context) {
 			UpdatedAt: user.UpdatedAt,
 			CreatedBy: user.CreatedBy,
 			UpdatedBy: user.UpdatedBy,
-		})
+		}
 	}
 
-	c.JSON(http.StatusOK, res)
+	c.JSON(http.StatusOK, responses.ListUsersResponse{
+		Count:  results.Total,
+		Length: len(results.Users),
+		Users:  users,
+	})
 }
 
 func (h *UserHandler) CreateUser(c *gin.Context) {

@@ -21,3 +21,8 @@ type User struct {
 	CreatedAt time.Time `gorm:"autoCreateTime;not null" json:"created_at"`
 	UpdatedAt time.Time `gorm:"autoUpdateTime" json:"updated_at"`
 }
+
+type ListUsersResult struct {
+	Users []User
+	Total int64
+}
