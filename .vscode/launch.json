@@ -11,6 +11,7 @@
             "mode": "debug",
             "program": "${workspaceFolder}/backend/cmd/app/main.go",
             "env": {
+                "PORT": "8080",
                 "POSTGRES_USER": "postgres",
                 "POSTGRES_PASSWORD": "postgres",
                 "POSTGRES_NAME": "postgres",

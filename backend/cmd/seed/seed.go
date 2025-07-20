@@ -3,8 +3,8 @@ package main
 import (
 	"log"
 
-	"github.com/shun198/golang-clean-architecture/internal/domains/seeds"
-	"github.com/shun198/golang-clean-architecture/internal/infrastructures/databases"
+	seed "github.com/shun198/golang-clean-architecture/internal/domains/seeds"
+	database "github.com/shun198/golang-clean-architecture/internal/infrastructures/databases"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -20,7 +20,7 @@ func main() {
 	database.InitDB()
 
 	users := seed.CreateUserLocalData()
-	successCount := 0
+	usersSuccessCount := 0
 
 	for i := range users {
 		users[i].Password = hashPassword(users[i].Password)
@@ -28,10 +28,25 @@ func main() {
 			log.Printf("システムユーザの作成に失敗しました: %v", err)
 			continue
 		}
-		successCount++
+		usersSuccessCount++
 	}
 
-	if successCount > 0 {
-		log.Printf("システムユーザのテストデータを %d 件作成しました", successCount)
+	if usersSuccessCount > 0 {
+		log.Printf("システムユーザのテストデータを %d 件作成しました", usersSuccessCount)
+	}
+
+	todos := seed.CreateTodoLocalData()
+	todosSuccessCount := 0
+
+	for i := range todos {
+		if err := database.DB.Create(&todos[i]).Error; err != nil {
+			log.Printf("Todoの作成に失敗しました: %v", err)
+			continue
+		}
+		todosSuccessCount++
+	}
+
+	if todosSuccessCount > 0 {
+		log.Printf("Todoのテストデータを %d 件作成しました", todosSuccessCount)
 	}
 }

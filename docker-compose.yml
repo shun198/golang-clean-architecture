@@ -1,4 +1,19 @@
 services:
+  app:
+    container_name: golang_clean_architecture_app
+    build:
+      context: .
+      dockerfile: backend/containers/golang/Dockerfile
+    ports:
+      - "8000:8000"
+    command: air
+    volumes:
+      - .:/usr/local/go/src/golang_clean_architecture
+    env_file:
+      - backend/.env
+    depends_on:
+      db:
+        condition: service_healthy
   db:
     container_name: golang_clean_architecture_db
     build:
