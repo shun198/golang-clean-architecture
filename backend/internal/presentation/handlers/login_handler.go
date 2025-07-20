@@ -54,7 +54,7 @@ func NewLoginHandler(loginUseCase usecase.LoginUseCase) *LoginHandler {
 func (h *LoginHandler) Login(c *gin.Context) {
 	var req requests.LoginRequest
 	if err := c.ShouldBind(&req); err != nil {
-		c.JSON(http.StatusBadGateway, gin.H{
+		c.JSON(http.StatusBadRequest, gin.H{
 			"error": "validation error",
 		})
 		return
@@ -62,7 +62,7 @@ func (h *LoginHandler) Login(c *gin.Context) {
 
 	tokenPair, err := h.loginUseCase.Execute(c.Request.Context(), req.Email, req.Password)
 	if err != nil {
-		c.JSON(http.StatusBadGateway, gin.H{
+		c.JSON(http.StatusBadRequest, gin.H{
 			"error": "failed creating token",
 		})
 		return

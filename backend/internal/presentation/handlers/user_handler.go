@@ -23,7 +23,7 @@ func NewUserHandler(userUsecase usecase.IUserUsecase) *UserHandler {
 func (h *UserHandler) GetUsers(c *gin.Context) {
 	var query requests.ListUsersQuery
 	if err := c.ShouldBindQuery(&query); err != nil {
-		c.JSON(http.StatusBadGateway, gin.H{
+		c.JSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),
 		})
 		return
@@ -35,7 +35,7 @@ func (h *UserHandler) GetUsers(c *gin.Context) {
 
 	results, err := h.userUsecase.GetAllUsers(query)
 	if err != nil {
-		c.JSON(http.StatusBadGateway, gin.H{
+		c.JSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),
 		})
 		return
@@ -65,7 +65,7 @@ func (h *UserHandler) GetUsers(c *gin.Context) {
 func (h *UserHandler) CreateUser(c *gin.Context) {
 	var req requests.CreateUserRequest
 	if err := c.ShouldBind(&req); err != nil {
-		c.JSON(http.StatusBadGateway, gin.H{
+		c.JSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),
 		})
 		return
@@ -73,7 +73,7 @@ func (h *UserHandler) CreateUser(c *gin.Context) {
 	auth_user_id := int(c.Keys["user_id"].(float64))
 	user, err := h.userUsecase.CreateUser(req, auth_user_id)
 	if err != nil {
-		c.JSON(http.StatusBadGateway, gin.H{
+		c.JSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),
 		})
 		return
@@ -95,14 +95,14 @@ func (h *UserHandler) CreateUser(c *gin.Context) {
 func (h *UserHandler) GetUser(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		c.JSON(http.StatusBadGateway, gin.H{
+		c.JSON(http.StatusBadRequest, gin.H{
 			"error": "id is not a valid integer",
 		})
 		return
 	}
 	user, err := h.userUsecase.GetUser(id)
 	if err != nil {
-		c.JSON(http.StatusBadGateway, gin.H{
+		c.JSON(http.StatusBadRequest, gin.H{
 			"error": "user not found",
 		})
 		return
@@ -123,21 +123,21 @@ func (h *UserHandler) GetUser(c *gin.Context) {
 func (h *UserHandler) UpdateUser(c *gin.Context) {
 	var req requests.UpdateUserRequest
 	if err := c.ShouldBind(&req); err != nil {
-		c.JSON(http.StatusBadGateway, gin.H{
+		c.JSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),
 		})
 		return
 	}
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		c.JSON(http.StatusBadGateway, gin.H{
+		c.JSON(http.StatusBadRequest, gin.H{
 			"error": "id is not a valid integer",
 		})
 		return
 	}
 	user, err := h.userUsecase.GetUser(id)
 	if err != nil {
-		c.JSON(http.StatusBadGateway, gin.H{
+		c.JSON(http.StatusBadRequest, gin.H{
 			"error": "user not found",
 		})
 		return
@@ -145,7 +145,7 @@ func (h *UserHandler) UpdateUser(c *gin.Context) {
 	auth_user_id := int(c.Keys["user_id"].(float64))
 	updated_user, err := h.userUsecase.UpdateUser(req, user, auth_user_id)
 	if err != nil {
-		c.JSON(http.StatusBadGateway, gin.H{
+		c.JSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),
 		})
 		return
@@ -166,21 +166,21 @@ func (h *UserHandler) UpdateUser(c *gin.Context) {
 func (h *UserHandler) DeleteUser(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		c.JSON(http.StatusBadGateway, gin.H{
+		c.JSON(http.StatusBadRequest, gin.H{
 			"error": "id is not a valid integer",
 		})
 		return
 	}
 	_, err = h.userUsecase.GetUser(id)
 	if err != nil {
-		c.JSON(http.StatusBadGateway, gin.H{
+		c.JSON(http.StatusBadRequest, gin.H{
 			"error": "user not found",
 		})
 		return
 	}
 	_, err = h.userUsecase.DeleteUser(id)
 	if err != nil {
-		c.JSON(http.StatusBadGateway, gin.H{
+		c.JSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),
 		})
 		return

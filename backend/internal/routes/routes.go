@@ -28,6 +28,7 @@ func SetupRoutes(r *gin.Engine) {
 func setupPublicRoutes(publicRoutes *gin.RouterGroup) {
 	setupHealthRoutes(publicRoutes)
 	setupLoginRoutes(publicRoutes)
+	setupTodoPublicRoutes(publicRoutes)
 }
 
 func setupPrivateRoutes(privateRoutes *gin.RouterGroup) {
@@ -57,4 +58,16 @@ func setupUserPrivateRoutes(privateRoutes *gin.RouterGroup) {
 	users.GET("/:id", userHandler.GetUser)
 	users.PUT("/:id", userHandler.UpdateUser)
 	users.DELETE("/:id", userHandler.DeleteUser)
+}
+
+func setupTodoPublicRoutes(publicRoutes *gin.RouterGroup) {
+	todos := publicRoutes.Group("/todos")
+	todoRepository := repository.NewTodoRepository(database.DB)
+	todoUsecase := usecase.NewTodoUsecase(todoRepository)
+	todoHandler := handlers.NewTodoHandler(todoUsecase)
+	todos.GET("", todoHandler.GetTodos)
+	todos.POST("", todoHandler.CreateTodo)
+	todos.GET("/:id", todoHandler.GetTodo)
+	todos.PUT("/:id", todoHandler.UpdateTodo)
+	todos.DELETE("/:id", todoHandler.DeleteTodo)
 }
