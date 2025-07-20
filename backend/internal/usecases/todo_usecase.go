@@ -9,7 +9,7 @@ import (
 type ITodoUsecase interface {
 	CreateTodo(req requests.CreateTodoRequest) (*models.Todo, error)
 	GetTodo(id int) (*models.Todo, error)
-	GetAllTodos() (*[]models.Todo, error)
+	GetAllTodos() ([]models.Todo, error)
 	UpdateTodo(req requests.UpdateTodoRequest, todo *models.Todo) (*models.Todo, error)
 	DeleteTodo(id int) (*models.Todo, error)
 }
@@ -24,7 +24,7 @@ func NewTodoUsecase(todoRepository repository.ITodoRepository) *TodoUsecase {
 	}
 }
 
-func (u *TodoUsecase) GetAllTodos() (*[]models.Todo, error) {
+func (u *TodoUsecase) GetAllTodos() ([]models.Todo, error) {
 	return u.todoRepository.GetAll()
 }
 

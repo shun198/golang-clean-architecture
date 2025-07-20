@@ -40,6 +40,7 @@ func (h *UserHandler) GetUsers(c *gin.Context) {
 		})
 		return
 	}
+	// len(results.Users) 分のスライスを事前に確保して初期化しておく
 	users := make([]responses.UsersResponse, len(results.Users))
 	for i, user := range results.Users {
 		users[i] = responses.UsersResponse{
@@ -102,7 +103,7 @@ func (h *UserHandler) GetUser(c *gin.Context) {
 	}
 	user, err := h.userUsecase.GetUser(id)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
+		c.JSON(http.StatusNotFound, gin.H{
 			"error": "user not found",
 		})
 		return
@@ -137,7 +138,7 @@ func (h *UserHandler) UpdateUser(c *gin.Context) {
 	}
 	user, err := h.userUsecase.GetUser(id)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
+		c.JSON(http.StatusNotFound, gin.H{
 			"error": "user not found",
 		})
 		return
@@ -173,7 +174,7 @@ func (h *UserHandler) DeleteUser(c *gin.Context) {
 	}
 	_, err = h.userUsecase.GetUser(id)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
+		c.JSON(http.StatusNotFound, gin.H{
 			"error": "user not found",
 		})
 		return

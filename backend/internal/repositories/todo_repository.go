@@ -8,7 +8,7 @@ import (
 type ITodoRepository interface {
 	Create(*models.Todo) (*models.Todo, error)
 	GetOne(id int) (*models.Todo, error)
-	GetAll() (*[]models.Todo, error)
+	GetAll() ([]models.Todo, error)
 	Update(*models.Todo) (*models.Todo, error)
 	DeleteOne(id int) (*models.Todo, error)
 }
@@ -23,12 +23,12 @@ func NewTodoRepository(db *gorm.DB) ITodoRepository {
 	}
 }
 
-func (r *TodoRepository) GetAll() (*[]models.Todo, error) {
+func (r *TodoRepository) GetAll() ([]models.Todo, error) {
 	var todos []models.Todo
 	if err := r.db.Find(&todos).Error; err != nil {
 		return nil, err
 	}
-	return &todos, nil
+	return todos, nil
 }
 
 func (r *TodoRepository) Create(todo *models.Todo) (*models.Todo, error) {

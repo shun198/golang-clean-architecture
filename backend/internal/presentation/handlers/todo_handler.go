@@ -29,7 +29,7 @@ func (h *TodoHandler) GetTodos(c *gin.Context) {
 		return
 	}
 	var todos []responses.TodoResponse
-	for _, todo := range *results {
+	for _, todo := range results {
 		todos = append(todos, responses.TodoResponse{
 			ID:          todo.ID,
 			Title:       todo.Title,
@@ -77,7 +77,7 @@ func (h *TodoHandler) GetTodo(c *gin.Context) {
 	}
 	todo, err := h.todoUsecase.GetTodo(id)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
+		c.JSON(http.StatusNotFound, gin.H{
 			"error": "todo not found",
 		})
 		return
@@ -108,7 +108,7 @@ func (h *TodoHandler) UpdateTodo(c *gin.Context) {
 	}
 	todo, err := h.todoUsecase.GetTodo(id)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
+		c.JSON(http.StatusNotFound, gin.H{
 			"error": "todo not found",
 		})
 		return
@@ -139,7 +139,7 @@ func (h *TodoHandler) DeleteTodo(c *gin.Context) {
 	}
 	_, err = h.todoUsecase.GetTodo(id)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
+		c.JSON(http.StatusNotFound, gin.H{
 			"error": "todo not found",
 		})
 		return
