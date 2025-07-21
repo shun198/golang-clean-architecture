@@ -25,7 +25,7 @@ func NewTodoRepository(db *gorm.DB) ITodoRepository {
 
 func (r *TodoRepository) GetAll() ([]models.Todo, error) {
 	var todos []models.Todo
-	if err := r.db.Find(&todos).Error; err != nil {
+	if err := r.db.Find(&todos).Order("id ASC").Error; err != nil {
 		return nil, err
 	}
 	return todos, nil

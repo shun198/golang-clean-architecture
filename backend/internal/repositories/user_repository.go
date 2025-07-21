@@ -29,6 +29,7 @@ func (r *UserRepository) GetAll(params requests.ListUsersQuery) (*models.ListUse
 	var total int64
 	query := r.db.Model(&models.User{})
 	query = applyUserFilters(query, params)
+	query = query.Order("id ASC")
 	if err := query.Count(&total).Error; err != nil {
 		return nil, err
 	}
