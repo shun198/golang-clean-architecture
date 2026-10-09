@@ -1,0 +1,30 @@
+version: 2
+updates:
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: weekly
+  - package-ecosystem: "devcontainers"
+    directory: "/"
+    schedule:
+      interval: weekly
+  - package-ecosystem: "docker"
+    directory: "/backend/containers/golang"
+    schedule:
+      interval: weekly
+  - package-ecosystem: "docker"
+    directory: "/backend/containers/nginx"
+    schedule:
+      interval: weekly
+  - package-ecosystem: "docker"
+    directory: "/backend/containers/postgres"
+    schedule:
+      interval: weekly
+  - package-ecosystem: "gomod"
+    directory: "/backend"
+    schedule:
+      interval: weekly
+  - package-ecosystem: "docker-compose"
+    directory: "/"
+    schedule:
+      interval: weekly
