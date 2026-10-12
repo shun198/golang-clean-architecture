@@ -1,4 +1,4 @@
-FROM golang:1.23.6
+FROM golang:1.27.0
 
 ENV GO_VERSION=1.23.6 \
     GOBIN=/go/bin \
